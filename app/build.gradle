@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.inhatc.sns_project"
-        minSdk 31
+        minSdk 21
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -38,7 +38,15 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+<<<<<<< HEAD
 //
 //    implementation platform('com.google.firebase:firebase-bom:30.0.0')
 //    implementation 'com.google.firebase:firebase-analytics'
 }
+=======
+    implementation platform('com.google.firebase:firebase-bom:30.0.1')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-auth'
+}
+apply plugin: 'com.google.gms.google-services'
+>>>>>>> main
