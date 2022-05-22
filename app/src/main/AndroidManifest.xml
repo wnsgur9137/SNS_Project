@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SNS_Project">
         <activity
-            android:name=".MainActivity"
+            android:name=".SignUpActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
