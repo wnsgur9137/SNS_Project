@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package com.inhatc.sns_project;
+package com.inhatc.sns_project.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Camera;
 import android.media.Image;
 import android.media.ImageReader;
 import android.os.Bundle;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.inhatc.sns_project.fragment.Camera2BasicFragment;
+import com.inhatc.sns_project.R;
 
 import java.io.File;
 import java.io.FileOutputStream;
