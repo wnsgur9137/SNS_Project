@@ -17,7 +17,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.inhatc.sns_project.R;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BasicActivity {
     private static final String TAG = "MainActivity";
 
     @Override
@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         findViewById(R.id.logoutButton).setOnClickListener(onClickListener);
+        findViewById(R.id.floatingActionButton).setOnClickListener(onClickListener);
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -66,6 +67,9 @@ public class MainActivity extends AppCompatActivity {
                     FirebaseAuth.getInstance().signOut();
                     myStartActivity(SignUpActivity.class);
 //                    finish(); -> [사용 노노]사용하면 메인 Activity에서 LoginActivity로 뒤로가기가 됨;;
+                    break;
+                case R.id.floatingActionButton:
+                    myStartActivity(WritePostActivity.class);
                     break;
             }
         }
