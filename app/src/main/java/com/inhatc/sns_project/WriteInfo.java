@@ -1,14 +1,19 @@
 package com.inhatc.sns_project;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 public class WriteInfo {
     private String title;
-    private String contents;
+    private ArrayList<String> contents;
     private String publisher;
+    private Date createdAt;
 
-    public WriteInfo(String title, String contents, String publisher) {
+    public WriteInfo(String title, ArrayList<String> contents, String publisher, Date createdAt) {
         this.title = title;
         this.contents = contents;
         this.publisher = publisher;
+        this.createdAt = createdAt;
     }
 
     public String getTitle() {
@@ -18,10 +23,10 @@ public class WriteInfo {
         this.title = title;
     }
 
-    public String getContents() {
+    public ArrayList<String> getContents() {
         return this.contents;
     }
-    public void setContents(String contents) {
+    public void setContents(ArrayList<String> contents) {
         this.contents = contents;
     }
 
@@ -30,5 +35,12 @@ public class WriteInfo {
     }
     public void setPublisher(String publisher) {
         this.publisher = publisher;
+    }
+
+    public Date getCreatedAt() {
+        return this.createdAt;
+    }
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 }
