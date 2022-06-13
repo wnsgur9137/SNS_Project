@@ -44,6 +44,11 @@ import android.media.ImageReader;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
@@ -54,14 +59,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-
-import com.inhatc.sns_project.view.AutoFitTextureView;
 import com.inhatc.sns_project.R;
+import com.inhatc.sns_project.view.AutoFitTextureView;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -181,19 +180,17 @@ public class Camera2BasicFragment extends Fragment
     private CameraDevice mCameraDevice;
 
     /**
-     * The {@link Size} of camera preview.
+     * The {@link android.util.Size} of camera preview.
      */
     private Size mPreviewSize;
 
     /**
-     * 카메라 전면/후면 아이디 값
-     *  전면 카메라 (0)
-     *  후면 카메라 (1)
+     * 카메라 전면 후면 아이디 값
      */
     private int facingId = 0;
 
     /**
-     *  자동 포커스 체크
+     * 자동 포커스 체크
      */
     private boolean mAutoFocusSupported;
 
@@ -264,7 +261,7 @@ public class Camera2BasicFragment extends Fragment
         }
 
     };
-     */
+    */
 
     private ImageReader.OnImageAvailableListener mOnImageAvailableListener;
     public void setOnImageAvailableListener(ImageReader.OnImageAvailableListener mOnImageAvailableListener) {
@@ -405,7 +402,7 @@ public class Camera2BasicFragment extends Fragment
      * @return The optimal {@code Size}, or an arbitrary one if none were big enough
      */
     private static Size chooseOptimalSize(Size[] choices, int textureViewWidth,
-            int textureViewHeight, int maxWidth, int maxHeight, Size aspectRatio) {
+                                          int textureViewHeight, int maxWidth, int maxHeight, Size aspectRatio) {
 
         // Collect the supported resolutions that are at least as big as the preview Surface
         List<Size> bigEnough = new ArrayList<>();
@@ -521,11 +518,13 @@ public class Camera2BasicFragment extends Fragment
 
                 int[] afAvailableModes = characteristics.get(CameraCharacteristics.CONTROL_AF_AVAILABLE_MODES);
 
-                if (afAvailableModes.length == 0 || (afAvailableModes.length == 1 && afAvailableModes[0] == CameraMetadata.CONTROL_AF_MODE_OFF)) {
+                if (afAvailableModes.length == 0 || (afAvailableModes.length == 1
+                        && afAvailableModes[0] == CameraMetadata.CONTROL_AF_MODE_OFF)) {
                     mAutoFocusSupported = false;
                 } else {
                     mAutoFocusSupported = true;
                 }
+
                 Integer facing = characteristics.get(CameraCharacteristics.LENS_FACING);
                 if (facing != null && facing == facingId) {
 
@@ -613,7 +612,6 @@ public class Camera2BasicFragment extends Fragment
                     mCameraId = cameraId;
                     return;
                 }
-
             }
         } catch (CameraAccessException e) {
             e.printStackTrace();
@@ -759,7 +757,7 @@ public class Camera2BasicFragment extends Fragment
     }
 
     /**
-     * Configures the necessary {@link Matrix} transformation to `mTextureView`.
+     * Configures the necessary {@link android.graphics.Matrix} transformation to `mTextureView`.
      * This method should be called after the camera preview size is determined in
      * setUpCameraOutputs and also the size of `mTextureView` is fixed.
      *
@@ -868,7 +866,7 @@ public class Camera2BasicFragment extends Fragment
                 public void onCaptureCompleted(@NonNull CameraCaptureSession session,
                                                @NonNull CaptureRequest request,
                                                @NonNull TotalCaptureResult result) {
-//                    showToast("Saved: " + mFile);
+                    //showToast("Saved: " + mFile);
                     Log.d(TAG, mFile.toString());
                     unlockFocus();
                 }
@@ -924,9 +922,9 @@ public class Camera2BasicFragment extends Fragment
                 takePicture();
                 break;
             case R.id.change:
-                if (facingId == CameraCharacteristics.LENS_FACING_FRONT) {
+                if(facingId == CameraCharacteristics.LENS_FACING_FRONT){
                     facingId = CameraCharacteristics.LENS_FACING_BACK;
-                } else {
+                }else {
                     facingId = CameraCharacteristics.LENS_FACING_FRONT;
                 }
                 closeCamera();
@@ -941,70 +939,6 @@ public class Camera2BasicFragment extends Fragment
                     CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
         }
     }
-//
-//    /**
-//     * Saves a JPEG {@link Image} into the specified {@link File}.
-//     */
-//    private static class ImageUpLoader implements Runnable {
-//
-//        /**
-//         * The JPEG image
-//         */
-//        private final Image mImage;
-//
-//        ImageUpLoader(Image image) {
-//            mImage = image;
-//        }
-//
-//        @Override
-//        public void run() {
-//            ByteBuffer buffer = mImage.getPlanes()[0].getBuffer();
-//            byte[] bytes = new byte[buffer.remaining()];
-//            buffer.get(bytes);
-//
-//            FirebaseStorage storage = FirebaseStorage.getInstance();
-//            StorageReference storageRef = storage.getReference();
-//
-//            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//            final StorageReference mountainImagesRef = storageRef.child("users/" + user.getUid() + "/profileImage.jpg");
-//
-//            UploadTask uploadTask = mountainImagesRef.putBytes(bytes);
-//
-//            uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-//                @Override
-//                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-//                    if (!task.isSuccessful()) {
-//                        Log.e("실패1", "실패");
-//                        throw task.getException();
-//                    }
-//
-//                    return mountainImagesRef.getDownloadUrl();
-//                }
-//            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-//                @Override
-//                public void onComplete(@NonNull Task<Uri> task) {
-//                    if (task.isSuccessful()) {
-//                        Uri downloadUri = task.getResult();
-//                        Log.e("성공", "성공 " + downloadUri);
-//                    } else {
-//                        Log.e("실패2", "실패");
-//                    }
-//                }
-//            });
-////            uploadTask.addOnFailureListener(new OnFailureListener() {
-////                @Override
-////                public void onFailure(@NonNull Exception e) {
-////                    Log.e("실패", "실패");
-////                }
-////            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-////                @Override
-////                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-////                    Log.e("성공", "성공");
-////                }
-////            });
-//        }
-//
-//    }
 
     /**
      * Saves a JPEG {@link Image} into the specified {@link File}.

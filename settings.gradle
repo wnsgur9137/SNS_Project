@@ -1,9 +1,1 @@
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
-    }
-}
-rootProject.name = "SNS_Project"
 include ':app'
